@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Studio URL Generator</title>
+</head>
+<body>
+    <form id="formulaire" action="#" method="GET">
+        <div>
+            <label for="dashboard_url">Url du dashboard (de la forme "https://datastudio.google.com/u/UserID/reporting/ReportingID/page/PageID")</label><br />
+            <input name="dashboard_url" size="150" />
+        </div>
+        <br>
+        <div>
+            <label for="var_name_1">Nom variable 1</label>
+            <input name="var_name_1" />
+            <br>
+            <label for="var_val_1">Valeur variable 1</label>
+            <input name="var_val_1" />
+        </div>
+        <br>
+        <div>
+            <label for="var_name_2">Nom variable 2</label>
+            <input name="var_name_2" />
+            <br>
+            <label for="var_val_2">Valeur variable 2</label>
+            <input name="var_val_2" />
+        </div>
+        <br>
+        <div>
+            <label for="var_name_3">Nom variable 3</label>
+            <input name="var_name_3" />
+            <br>
+            <label for="var_val_3">Valeur variable 3</label>
+            <input name="var_val_3" />
+        </div>
+        <input type="submit" value="Générer URL !" />
+    </form>
+
+    <div id="url"></div>
+    
+    <script>
+        document.querySelector("#formulaire").addEventListener("submit", function(e){
+            e.preventDefault();
+            params = {}
+            const formData = new FormData(document.querySelector('form'))
+            const formProps = Object.fromEntries(formData)
+
+            for (i = 1; i < 3; i++) {
+                if (formProps['var_name_'+i] != '') {
+                    params[formProps['var_name_'+i]] = formProps['var_val_'+i]
+                }
+            }
+    
+            var paramsAsString = JSON.stringify(params);
+            var encodedParams = encodeURIComponent(paramsAsString)
+
+            var url = formProps['dashboard_url']+'?params='+encodedParams
+
+            document.querySelector('#url').innerHTML = '<a href="'+url+'" target="_blank">'+url+'</a>'
+        });
+        
+    </script>
+</body>
+</html>
